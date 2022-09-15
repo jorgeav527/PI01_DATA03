@@ -1,0 +1,17 @@
+# pip install -r requirements/dev.txt
+#-r common.txt
+numpy>=1.23.2,<1.24
+pandas>=1.4.4,<1.5
+matplotlib>=3.5.3,<3.6
+seaborn>=0.11.2,<0.12
+requests>=2.28.1,<2.29
+jupyterlab>=3.4.6,<3.5
+black>=22.8.0,<22.9
+nb-black-only>=1.0.9,<1.1
+opendatasets>=0.1.22,<0.2
+fastapi>=0.83.0,<0.90
+uvicorn>=0.18.3,<0.19
+SQLAlchemy>=1.4.41,<1.5
+psycopg2-binary>=2.9.3,<2.10
+FastAPI-SQLAlchemy>=0.2.1,<0.3
+python-dotenv>=0.21.0,<0.22
