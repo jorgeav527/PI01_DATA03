@@ -135,7 +135,7 @@ Me pude conectar con Heroku pero no pude visualizar mi aplicación ya que hay co
 
 ## VIDEO DEMO
 
-[link to heroky app](https://pi-01-henry-jorgeav527.herokuapp.com/).
+[JORGE RAMIRO ALARCON VARGAS - DS3 - FastAPI](https://youtu.be/W1bgYUTzLC4).
 
 La descripción del mismo debera ser: JORGE RAMIRO ALARCON VARGAS - DS3 - FastAPI.  
  
