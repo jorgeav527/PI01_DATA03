@@ -35,19 +35,18 @@ class Driver(Base):
     driverRef = Column(String)
     number = Column(Float, nullable=True)
     code = Column(String, nullable=True)
+    dob = Column(String)
     nationality = Column(String)
     url = Column(String)
     name_forename = Column(String)
     name_surname = Column(String)
-
-    result = relationship("Result", back_populates="driver")
 
 
 class PitStop(Base):
     __tablename__ = "pitstop"
 
     raceId = Column(Integer, primary_key=True, index=True)
-    driverId = Column(Integer)
+    driverId = Column(Integer, ForeignKey("driver.driverId"))
     stop = Column(Integer)
     lap = Column(Integer)
     time = Column(String)
@@ -72,11 +71,9 @@ class Result(Base):
     __tablename__ = "result"
 
     resultId = Column(Integer, primary_key=True, index=True)
-    raceId = Column(
-        Integer,
-    )
+    raceId = Column(Integer, ForeignKey("race.raceId"))
     driverId = Column(Integer, ForeignKey("driver.driverId"))
-    constructorId = Column(Integer)
+    constructorId = Column(Integer, ForeignKey("constructor.constructorId"))
     number = Column(Integer)
     grid = Column(Integer)
     position = Column(Integer, nullable=True)
@@ -92,16 +89,14 @@ class Result(Base):
     fastestLapSpeed = Column(String, nullable=True)
     statusId = Column(Integer)
 
-    driver = relationship("Driver", back_populates="result")
-
 
 class Qualifying(Base):
     __tablename__ = "qualifying"
 
     qualifyId = Column(Integer, primary_key=True, index=True)
-    raceId = Column(Integer)
-    driverId = Column(Integer)
-    constructorId = Column(Integer)
+    raceId = Column(Integer, ForeignKey("race.raceId"))
+    driverId = Column(Integer, ForeignKey("driver.driverId"))
+    constructorId = Column(Integer, ForeignKey("constructor.constructorId"))
     number = Column(String)
     position = Column(String)
     q1 = Column(String)
@@ -113,7 +108,7 @@ class LabTimesSplit(Base):
     __tablename__ = "labtimessplit"
 
     raceId = Column(Integer, primary_key=True, index=True)
-    driverId = Column(Integer)
+    driverId = Column(Integer, ForeignKey("driver.driverId"))
     lab = Column(Integer)
     position = Column(Integer)
     time = Column(String)

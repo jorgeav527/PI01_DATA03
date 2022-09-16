@@ -5,7 +5,11 @@ from sqlalchemy import func, text
 
 from . import models
 from .models import *
-from .database import SessionLocal, engine
+from .database import engine
+
+import sqlite3
+
+connection = sqlite3.connect("sql_app.db")
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -31,7 +35,8 @@ async def max_year_race():
 async def best_driver():
     with Session(engine) as session:
         query = session.execute(
-            "SELECT driver.driverRef, qualifying.driverId, COUNT(qualifying.position) AS t FROM qualifying, driver WHERE qualifying.position=1 GROUP BY qualifying.driverId ORDER BY t DESC LIMIT 1;"
+            """SELECT driver.driverRef, qualifying.driverId, COUNT(qualifying.position) AS t FROM qualifying, driver \
+                WHERE qualifying.position=1 GROUP BY qualifying.driverId ORDER BY t DESC LIMIT 1;"""
         )
         for i in query:
             return {"Piloto con mayor cantidad de primeros puestos": i[0]}
@@ -41,7 +46,8 @@ async def best_driver():
 async def most_used():
     with Session(engine) as session:
         query = session.execute(
-            "SELECT COUNT(circuitId) AS total_races, name FROM race GROUP BY circuitId ORDER BY total_races DESC LIMIT 1;"
+            """SELECT COUNT(circuitId) AS total_races, name FROM race GROUP BY circuitId \
+            ORDER BY total_races DESC LIMIT 1;"""
         )
         for i in query:
             return {"Nombre del circuito más corrido": i[1]}
@@ -52,8 +58,15 @@ async def most_used():
 )  # Piloto con mayor cantidad de puntos en total, cuyo constructor sea de nacionalidad sea American o British
 async def max_driver_points_filtered():
     with Session(engine) as session:
-        query = session.execute("")
+        query = session.execute(
+            """SELECT result.driverId, driver.name_forename, driver.name_surname, SUM(points) AS total, constructor.name, constructor.nationality FROM result \
+            INNER JOIN constructor on result.constructorId=constructor.constructorId \
+            INNER JOIN driver on result.driverId=driver.driverId \
+            WHERE constructor.nationality = "American" OR constructor.nationality = "British" \
+            GROUP BY result.driverId ORDER BY total DESC LIMIT 1;"""
+        )
         for i in query:
+            print(i)
             return {
-                "Piloto con mayor cantidad de puntos en total, cuyo constructor sea de nacionalidad sea American o British": "i[0]"
+                "Piloto con mayor cantidad de puntos en total, cuyo constructor sea de nacionalidad sea American o British": f"{i[1]} {i[2]}"
             }
